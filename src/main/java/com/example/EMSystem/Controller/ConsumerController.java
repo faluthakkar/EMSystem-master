@@ -163,7 +163,7 @@ public class ConsumerController {
     }
 
     @PutMapping("/bill/{inputId}/{currentReading}")
-    public int billsGeneratedByConnectionId(@PathVariable("inputId") int inputId,@PathVariable("currentReading") int currentReading) {
+    public int billsGeneratedByConnectionId(@PathVariable("inputId") int inputId,@PathVariable("currentReading") int currentReading) throws ResourceNotFoundException {
         return billService.generateBillByConnectionId(inputId, currentReading);
     }
 
