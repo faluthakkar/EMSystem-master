@@ -25,7 +25,7 @@ public interface BillService {
    List<Bill> billsByMonthAndYear(String iyear, String imonth);
 
     @Procedure(procedureName="generateBillByConnectionId")
-    int generateBillByConnectionId(int inputId,int currentReading);
+    int generateBillByConnectionId(int inputId,int currentReading) throws ResourceNotFoundException;
 
     @Procedure(procedureName="billsByCityAndArea")
     List<Bill> billsByCityAndArea(String iarea, String icity);

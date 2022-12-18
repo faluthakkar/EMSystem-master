@@ -1,5 +1,6 @@
 package com.example.EMSystem.ServiceImpl;
 
+import com.example.EMSystem.Exception.ResourceAlreadyExits;
 import com.example.EMSystem.Exception.ResourceNotFoundException;
 import com.example.EMSystem.Service.BillService;
 import com.example.EMSystem.entity.Bill;
@@ -72,15 +73,17 @@ public class BillServiceImpl  implements BillService {
     }
 
     @Override
-    public int generateBillByConnectionId(int inputId, int currentReading) {
-        StoredProcedureQuery billById = em.createNamedStoredProcedureQuery("generateBillByConnectionId");
-        billById.setParameter("inputId",inputId);
-          billById.setParameter("currentReading",currentReading);
-        return billById.getUpdateCount();
+    public int generateBillByConnectionId(int inputId, int currentReading) throws ResourceNotFoundException {
 
-
+        if (billRepository.findById(inputId).isPresent()) {
+            StoredProcedureQuery billById = em.createNamedStoredProcedureQuery("generateBillByConnectionId");
+            billById.setParameter("inputId", inputId);
+            billById.setParameter("currentReading", currentReading);
+            return billById.getUpdateCount();
+        } else {
+            throw new ResourceNotFoundException("Bill id ", "bill", inputId);
+        }
     }
-
     @Override
     public List<Bill> billsByCityAndArea(String iarea, String icity) {
         StoredProcedureQuery billByArea = em.createNamedStoredProcedureQuery("billsByCityAndArea")
